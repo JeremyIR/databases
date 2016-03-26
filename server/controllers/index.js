@@ -1,37 +1,59 @@
-var path = require('path');
-var url = require('url');
-var parser = require('body-parser');
 var models = require('../models');
-var util = require('../util.js');
-// var jsonParser = parser.json();
+var bluebird = require('bluebird');
 
-
+var userFields = ['username'];
+var messageFields = ['message', 'username', 'roomname'];
+var roomname = ['roomname'];
 module.exports = {
   messages: {
     get: function (req, res) {
-      var requestUrl = parser(req.url);
-      console.log(requestUrl, '******************');
-      if (requestUrl === '/classes/messages' && request.method === 'GET') {
-        var data = models.messages; // coming from model
-        res.send(data); // render page and send data with it
-      }
-    }, // a function which handles a get request for all messages
+      modules.messages.get(function(err, results) {
+        res.json(results);
+      });
+    },
+      // var requestUrl = parser(req.url);
+      // console.log(requestUrl, '******************');
+      // if (requestUrl === '/classes/messages' && request.method === 'GET') {
+      //   var data = models.messages; // coming from model
+      //   res.send(data); // render page and send data with it
+     // a function which handles a get request for all messages
     post: function (req, res) {
-
-      console.log(req.body);// this will be the post data in JSON form
-
-    } // a function which handles posting a message to the database
+      var params = [req.body[text], req.body[username], req.body[roomname] ];
+      modules.messages.post(params, function(err, results) {
+        res.json(results);
+      });
+    },
+      //console.log(req.body);// this will be the post data in JSON form
+     // a function which handles posting a message to the database
   },
 
   users: {
     // Ditto as above
     get: function (req, res) {
-
+      modules.users.get(function(err, results) {
+        res.json(results);
+      });
     },
     post: function (req, res) {
+      var params = [req.body[username] ];
+      modules.users.post(params, function(err, results) {
+        res.json(results);
+      });
+    }
+  },
 
+  rooms: {
+    // Ditto as above
+    get: function (req, res) {
+      modules.rooms.get(function(err, results) {
+        res.json(results);
+      });
+    },
+    post: function (req, res) {
+      modules.rooms.post(function(err, results) {
+        res.json(results);
+      });
     }
   }
 };
-
 
