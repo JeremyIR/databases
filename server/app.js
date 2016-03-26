@@ -1,9 +1,11 @@
 var express = require('express');
 var db = require('./db');
+var mysql = require('mysql');
 
 // Middleware
 var morgan = require('morgan');
 var parser = require('body-parser');
+
 
 // Router
 var router = require('./routes.js');
@@ -29,4 +31,5 @@ if (!module.parent) {
   app.listen(app.get('port'));
   console.log('Listening on', app.get('port'));
 }
+
 
