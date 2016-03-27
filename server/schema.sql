@@ -1,33 +1,46 @@
+DROP DATABASE IF EXISTS chat;
+
 CREATE DATABASE chat;
 
 USE chat;
 
 CREATE TABLE messages (
-  /* Describe your table here.*/
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  message VARCHAR(100),
-  created_at TIMESTAMP DEFAULT NOW(),
-  PRIMARY KEY(ID)
+  id int not null primary key auto_increment,
+  message varchar(200),
+  createdAt date not null,
+  room_id int,
+  user_id int
 );
 
-/* Create other tables and define schemas for them here! */
 CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  userName VARCHAR(30),
-  created_at TIMESTAMP DEFAULT NOW(),
-  PRIMARY KEY(ID)
+  id int not null primary key auto_increment,
+  username varchar(25)
 );
 
-CREATE TABLE lobbys (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  lobby VARCHAR(30),
-  created_at TIMESTAMP DEFAULT NOW()
+CREATE TABLE rooms (
+  id int not null primary key auto_increment,
+  roomname varchar(25)
 );
 
+ALTER TABLE messages ADD FOREIGN KEY (user_id) REFERENCES users (id);
+ALTER TABLE messages ADD FOREIGN KEY (room_id) REFERENCES rooms (id);
 
+
+insert into rooms (roomname) values ('room1'),
+  ('room2'),
+  ('room3'),
+  ('room4');
+
+insert into users (username) values ('H'), ('I'), ('V'), ('E');
+
+insert into messages (message, user_id, room_id, createdAt) values ('check', 4, 1, STR_TO_DATE('1-01-2016', '%d-%m-%Y')),
+('test1', 4, 1, STR_TO_DATE('1-01-2016', '%d-%m-%Y')),
+('test2', 1, 2, STR_TO_DATE('1-01-2016', '%d-%m-%Y')),
+('test3', 2, 2, STR_TO_DATE('1-01-2016', '%d-%m-%Y')),
+('test4', 3, 1, STR_TO_DATE('1-01-2016', '%d-%m-%Y')),
+('test5', 2, 3, STR_TO_DATE('1-01-2016', '%d-%m-%Y')),
+('test6', 2, 2, STR_TO_DATE('1-01-2016', '%d-%m-%Y'));
 
 /*  Execute this file from the command line by typing:
  *    mysql -u root < server/schema.sql
  *  to create the database and the tables.*/
-
-
