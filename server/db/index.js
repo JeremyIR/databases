@@ -2,12 +2,12 @@ var Sequelize = require('sequelize');
 var db = new Sequelize('chat', 'root', '');
 
 var Usr = db.define('Usr', {
-  username: Sequelize.STRING
+    username: Sequelize.STRING
 });
 
 var Msg = db.define('Msg', {
-  text: Sequelize.STRING,
-  rmn: Sequelize.STRING
+    text: Sequelize.STRING,
+    rmn: Sequelize.STRING
 });
 
 Msg.belongsTo(Usr);
@@ -34,4 +34,3 @@ exports.Msg = Msg;
 // });
 
 // dbConnection.connect();
-

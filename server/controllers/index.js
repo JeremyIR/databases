@@ -1,43 +1,43 @@
 var db = require('../db');
 
 module.exports = {
-  messages: {
-    get: function (req, res) {
-      db.Msg.findAll({include: [db.Usr]})
-        .then(function(messages) {
-          res.json(messages);
-        });
+    messages: {
+        get: function(req, res) {
+            db.Msg.findAll({ include: [db.Usr] })
+                .then(function(messages) {
+                    res.json(messages);
+                });
+        },
+        post: function(req, res) {
+            db.Usr.findOrCreate({ where: { username: req.body.username } })
+                .spread(function(user, created) {
+                    db.Msg.create({
+                        userid: user.get('id'),
+                        text: req.body.message,
+                        roomname: req.body.rmn
+                    }).then(function(message) {
+                        res.sendStatus(201);
+                    });
+                });
+        }
     },
-    post: function (req, res) {
-      db.Usr.findOrCreate({where: {username: req.body.username}})
-        .spread(function(user, created) {
-          db.Msg.create({
-            userid: user.get('id'),
-            text: req.body.message,
-            roomname: req.body.rmn
-          }).then(function(message) {
-            res.sendStatus(201);
-          });
-        });
-    }
-  },
 
-  users: {
-    get: function (req, res) {
-      db.Usr.findAll()
-        .then(function(users) {
-          res.json(users);
-        });
-    },
-    post: function (req, res) {
-      db.User.findOrCreate({where: {username: req.body.username}})
-        // findOrCreate returns multiple resutls in an array
-        // use spread to assign the array to function arguments
-        .spread(function(user, created) {
-          res.sendStatus(created ? 201 : 200);
-        });
+    users: {
+        get: function(req, res) {
+            db.Usr.findAll()
+                .then(function(users) {
+                    res.json(users);
+                });
+        },
+        post: function(req, res) {
+            db.User.findOrCreate({ where: { username: req.body.username } })
+                // findOrCreate returns multiple resutls in an array
+                // use spread to assign the array to function arguments
+                .spread(function(user, created) {
+                    res.sendStatus(created ? 201 : 200);
+                });
+        }
     }
-  }
 };
 
 // var models = require('../models');
@@ -82,4 +82,3 @@ module.exports = {
 //     }
 //   },
 // };
-
